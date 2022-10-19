@@ -43,7 +43,7 @@ function App() {
                 <a href={item.url}>{item.title}</a> 
               </span>
               <span> author: {item.author} </span>
-              <span>comments: {item.num_comments}{" "}</span>
+              <span>comments: {item.num_comments}</span>
               <span>points: {item.points} </span>
 
             </li>
