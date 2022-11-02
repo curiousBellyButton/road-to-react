@@ -25,32 +25,41 @@ const list = [
   },
 ];
 
+let List = () => 
+ (
+    <ul>
+      {list.map(function(item) {
+        return (
+          <li key={item.objectID}>
+            <span> 
+              <a href={item.url}>{item.title}</a> 
+            </span>
+            <span> author: {item.author} </span>
+            <span>comments: {item.num_comments}</span>
+            <span>points: {item.points} </span>
+          </li>
+        );  
+      })}
+    </ul>
+  )
+
+
+
+function Search() {
+  return (
+    <>
+      <label htmlFor="search">Search</label>
+      <input id="search" type="text" />
+    </>
+  )
+}
 function App() {
   return (
     <div>
       <h1>My Hacker Stories</h1>   
-    
-      <label htmlFor="search">Search</label>
-      <input id="search" type="text" />
-
+      <Search />     
       <hr />
-      {/*  render the list */}
-      <ul>
-        {list.map(function(item) {
-          return (
-            <li key={item.objectID}>
-              <span> 
-                <a href={item.url}>{item.title}</a> 
-              </span>
-              <span> author: {item.author} </span>
-              <span>comments: {item.num_comments}</span>
-              <span>points: {item.points} </span>
-
-            </li>
-          );  
-          
-        })}
-      </ul>
+      <List />
     </div>
   );
 }
