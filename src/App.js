@@ -3,91 +3,109 @@ import './App.css';
 
 // itemMap can be named anything
 
-let List = (props) => 
- (  <>
-      <h1>{props.headerTitle}</h1>
-      <ul>
-        {props.listStories.map(function(itemMap) {
-          return (<Item item={itemMap} headerTitle = "headerTitleItem" />);  
-        })}
-      </ul>
-    </>
-  )
-
-const Item = (props) => {
-  return (
-    <li key={props.item.objectID}>
-      <span> 
-        <a href={props.item.url}>{props.item.title }</a> 
-      </span>
-      <span>author: {props.item.author} </span>
-      <span>comments: {props.item.num_comments}</span>
-      <span>points: {props.item.points} </span>
-      <span>reviews: {props.item.reviews} </span>
-      <h2>{props.headerTitle}</h2>
-    </li>
-  )
-} 
-
-function Search(props) {
-  
-  const [searchTerm, setSearchTerm] = React.useState('');
-
-  const handleChange = (event) => {
-    setSearchTerm(event.target.value);
-    props.onSearch(event);
-  }
- 
-  const handleMouseOver = (event) => {
-    console.log(event);
-  }
-  return (
-    <>
-      <label htmlFor="search">Search</label>
-      <input id="search" type="text" onChange={handleChange} onMouseOver={handleMouseOver} />
-    <p>
-      Searching for <strong>{searchTerm}</strong>
-    </p>
-    </>
-  )
-}
 
 function App() {
 
   const stories = [
     {
-    title: 'React',
-    url: 'https://reactjs.org/',
-    author: 'Jordan Walke',
-    num_comments: 3,
-    points: 4,
-    reviews: 333,
-    objectID: 0,
+      title: 'React',
+      url: 'https://reactjs.org/',
+      author: 'Jordan Walke',
+      num_comments: 3,
+      points: 4,
+      reviews: 333,
+      objectID: 0,
     },
     {
-    title: 'Redux',
-    url: 'https://redux.js.org/',
-    author: 'Dan Abramov, Andrew Clark',
-    num_comments: 2,
-    points: 5,
-    reviews: 246,
-    objectID: 1,
+      title: 'Redux',
+      url: 'https://redux.js.org/',
+      author: 'Dan Abramov, Andrew Clark',
+      num_comments: 2,
+      points: 5,
+      reviews: 246,
+      objectID: 1,
+    },
+    {
+      title: 'react latest version',
+      url: 'https://redux.js.org/',
+      author: 'Dan Abramov, Andrew Clark',
+      num_comments:65,
+      points: 5,
+      reviews: 6565,
+      objectID: 2,
     },
   ];
 
+  const [searchTerm, setSearchTerm] = React.useState('');
+
   const handleSearch = (event)  => {
     console.log(event.target.value);
+    setSearchTerm(event.target.value);
   }
+
+  const searchedStories = stories.filter((story) => {
+    return story.title.toLowerCase().includes(searchTerm.toLowerCase());
+  })
   // listStories can be named anything, in the props component, it must be the same, e.g. props.listStories.title
 
   return (
     <div>
       <h1>My Hacker Stories</h1>   
-      <Search onSearch={handleSearch} />     
+      <Search onSearch={handleSearch} searchTerm={searchTerm} />     
       <hr />
-      <List listStories={stories} headerTitle = "headerTitleList" />
+      <List listStories={searchedStories} headerTitle = "react" />
     </div>
   );
 }
+
+const List = ({ headerTitle, listStories }) => 
+ (  <>
+      <h1>{headerTitle}</h1>
+      <ul>
+        {listStories.map((itemMap) => (
+          <Item key={itemMap.objectID} item={itemMap} />  
+        ))}
+      </ul>
+    </>
+  )
+
+const Item = ({ item }) => {
+  return (
+    <li key={item.objectID}>
+      <span> 
+        <a href={item.url}>{item.title }</a> 
+      </span>
+      <span> author: {item.author} </span>
+      <span>comments: {item.num_comments}</span>
+      <span>points: {item.points} </span>
+      <span>reviews: {item.reviews} </span>
+      
+    </li>
+  )
+} 
+
+const Search = ({ search, onSearch, searchTerm }) => {
+  
+  const handleChange = (event) => {
+    onSearch(event);
+  }
+ 
+   return (
+    <>
+      <label htmlFor="search">Search</label>
+      <input 
+        id="search" 
+        type="text" 
+        value={search}
+        onChange={handleChange} 
+        
+      />
+      <p>
+        Searching for <strong>{searchTerm}</strong>
+      </p>
+    </>
+  )
+}
+
 
 export default App
