@@ -3,7 +3,6 @@ import './App.css';
 
 // itemMap can be named anything
 
-
 function App() {
 
   const stories = [
@@ -36,24 +35,34 @@ function App() {
     },
   ];
 
-  const [searchTerm, setSearchTerm] = React.useState('');
+  // searchTerm, setSearchTerm can be named anything  
+  const [searchTerm, setSearchTerm] = 
+    React.useState(localStorage.getItem('search') || 'defaultSearchValue');
+    // console.log(searchTerm);
+  
+  React.useEffect(() => {
+    localStorage.setItem('search', searchTerm);
+  }, [searchTerm]);
+  
 
   const handleSearch = (event)  => {
     console.log(event.target.value);
     setSearchTerm(event.target.value);
+    localStorage.setItem('search', event.target.value);
   }
 
   const searchedStories = stories.filter((story) => {
     return story.title.toLowerCase().includes(searchTerm.toLowerCase());
   })
-  // listStories can be named anything, in the props component, it must be the same, e.g. props.listStories.title
+  
+  // listStories can be named anything; in the props component, it must be the same, e.g. props.listStories.title
 
   return (
     <div>
       <h1>My Hacker Stories</h1>   
-      <Search onSearch={handleSearch} searchTerm={searchTerm} />     
+      <Search onSearch={handleSearch} search={searchTerm} searchTerm={searchTerm}/>     
       <hr />
-      <List listStories={searchedStories} headerTitle = "react" />
+      <List listStories={searchedStories} headerTitle = "React" />
     </div>
   );
 }
@@ -90,12 +99,13 @@ const Search = ({ search, onSearch, searchTerm }) => {
     onSearch(event);
   }
  
-   return (
+  return (
     <>
       <label htmlFor="search">Search</label>
       <input 
         id="search" 
         type="text" 
+        // retains the typed input in search box
         value={search}
         onChange={handleChange} 
         
@@ -106,6 +116,5 @@ const Search = ({ search, onSearch, searchTerm }) => {
     </>
   )
 }
-
 
 export default App
